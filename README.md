@@ -9,8 +9,6 @@
 - close/Open Video
 - Mute/UnMute Audio
 
-https://user-images.githubusercontent.com/66161239/125756026-ae72e99b-171a-4155-bbed-37d1219c6d1c.mp4
-
 ## Test 
 - Windows
 
