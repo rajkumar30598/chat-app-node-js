@@ -3,21 +3,10 @@ const main__chat__window = document.getElementById("main__chat_window");
 const videoGrids = document.getElementById("video-grids");
 const myVideo = document.createElement("video");
 const chat = document.getElementById("chat");
+
 OtherUsername = "";
 chat.hidden = true;
 myVideo.muted = true;
-
-window.onload = () => {
-  $(document).ready(function () {
-    $("#getCodeModal").modal("show");
-  });
-};
-
-var peer = new Peer(undefined, {
-  path: "/peerjs",
-  host: "/",
-  port: "3030",
-});
 
 let myVideoStream;
 const peers = {};
@@ -26,6 +15,12 @@ var getUserMedia =
   navigator.webkitGetUserMedia ||
   navigator.mozGetUserMedia;
 
+var peer = new Peer(undefined, {
+  path: "/peerjs",
+  host: "/",
+  port: "3030",
+});
+
 sendmessage = (text) => {
   if (event.key === "Enter" && text.value != "") {
     socket.emit("messagesend", myname + " : " + text.value);
@@ -33,27 +28,6 @@ sendmessage = (text) => {
     main__chat_window.scrollTop = main__chat_window.scrollHeight;
   }
 };
-
-navigator.mediaDevices
-  .getUserMedia({
-    video: true,
-    audio: true,
-  })
-  .then((stream) => {
-    myVideoStream = stream;
-    addVideoStream(myVideo, stream, myname);
-
-    socket.on("user-connected", (id, username) => {
-      console.log("userid:" + id);
-      connectToNewUser(id, stream, username);
-      socket.emit("tellName", myname);
-    });
-
-    socket.on("user-disconnected", (id) => {
-      console.log(peers);
-      if (peers[id]) peers[id].close();
-    });
-  });
 
 peer.on("call", (call) => {
   getUserMedia(
@@ -121,6 +95,7 @@ const copy = async () => {
   const roomid = document.getElementById("roomid").innerText;
   await navigator.clipboard.writeText("http://localhost:3030/join/" + roomid);
 };
+
 const invitebox = () => {
   $("#getCodeModal").modal("show");
 };
@@ -178,3 +153,30 @@ const addVideoStream = (videoEl, stream, name) => {
     }
   }
 };
+
+window.onload = () => {
+  $(document).ready(function () {
+    $("#getCodeModal").modal("show");
+  });
+};
+
+navigator.mediaDevices
+  .getUserMedia({
+    video: true,
+    audio: true,
+  })
+  .then((stream) => {
+    myVideoStream = stream;
+    addVideoStream(myVideo, stream, myname);
+
+    socket.on("user-connected", (id, username) => {
+      console.log("userid:" + id);
+      connectToNewUser(id, stream, username);
+      socket.emit("tellName", myname);
+    });
+
+    socket.on("user-disconnected", (id) => {
+      console.log(peers);
+      if (peers[id]) peers[id].close();
+    });
+  });
