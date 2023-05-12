@@ -1,4 +1,4 @@
-<!-- # zoom-clone-2.0
+# meet-clone
 
 ## Features
 - Inro page (Host a meeting or join a meeting page)
@@ -15,13 +15,7 @@ https://user-images.githubusercontent.com/66161239/125756026-ae72e99b-171a-4155-
 - Windows
 
 ## How to run
-- git clone https://github.com/harsh317/zoom-clone-2.0.git
-- cd zoom-clone-2.0
+- git clone https://github.com/rajkumar30598/meet-app-node-js.git
+- cd meet-clone
 - npm server.js
 - Go to LocalHost:3030
-
-## tutorial
-https://medium.com/nerd-for-tech/full-stack-zoom-clone-943289af8f7d
-
-## Wanna allow Other people to join
-- Use ngrok or deploy your app on heroku -->
