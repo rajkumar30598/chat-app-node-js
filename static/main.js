@@ -16,9 +16,16 @@ var getUserMedia =
   navigator.webkitGetUserMedia ||
   navigator.mozGetUserMedia;
 
+// var peer = new Peer(undefined, {
+//   path: "/peerjs",
+//   host: "/",
+//   port: "3030",
+// });
+
 var peer = new Peer(undefined, {
   path: "/peerjs",
-  host: "/",
+  host: "meet-app-node-js.vercel.app",
+  secure:true,
   port: "3030",
 });
 
