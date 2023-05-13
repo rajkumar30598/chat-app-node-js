@@ -49,13 +49,11 @@ navigator.mediaDevices
     addVideoStream(myVideo, stream, myname);
 
     socket.on("user-connected", (id, username) => {
-      console.log("userid:" + id);
       connectToNewUser(id, stream, username);
       socket.emit("tellName", myname);
     });
 
     socket.on("user-disconnected", (id) => {
-      console.log(peers);
       if (peers[id]) peers[id].close();
     });
   });
@@ -102,7 +100,6 @@ socket.on("createMessage", (message) => {
 // Socket Emit if Message Name Added
 socket.on("AddName", (username) => {
   OtherUsername = username;
-  console.log(username);
 });
 
 // Audio Mute Toggle
@@ -120,7 +117,6 @@ const muteUnmute = () => {
 // Video Mute Toggle
 const VideomuteUnmute = () => {
   const enabled = myVideoStream.getVideoTracks()[0].enabled;
-  console.log(getUserMedia);
   if (enabled) {
     myVideoStream.getVideoTracks()[0].enabled = false;
     document.getElementById("video").style.color = "red";
@@ -144,7 +140,6 @@ const connectToNewUser = (userId, streams, myname) => {
   const call = peer.call(userId, streams);
   const video = document.createElement("video");
   call.on("stream", (userVideoStream) => {
-    //       console.log(userVideoStream);
     addVideoStream(video, userVideoStream, myname);
   });
   call.on("close", () => {

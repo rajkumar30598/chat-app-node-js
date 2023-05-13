@@ -11,6 +11,8 @@ const peerServer = ExpressPeerServer(server, {
 const path = require("path");
 
 app.set("view engine", "ejs");
+app.set('views', __dirname + '/views')
+
 app.use("/public", express.static(path.join(__dirname, "static")));
 app.use("/peerjs", peerServer);
 
@@ -32,7 +34,7 @@ app.get("/joinold", (req, res) => {
 });
 
 app.get("/join/:rooms", (req, res) => {
-  res.render("room", { roomid: req.params.rooms, Myname: req.query.name });
+  res.render("room.ejs", { roomid: req.params.rooms, Myname: req.query.name });
 });
 
 io.on("connection", (socket) => {
@@ -41,12 +43,10 @@ io.on("connection", (socket) => {
     socket.to(roomId).broadcast.emit("user-connected", id, myname);
 
     socket.on("messagesend", (message) => {
-      console.log(message);
       io.to(roomId).emit("createMessage", message);
     });
 
     socket.on("tellName", (myname) => {
-      console.log(myname);
       socket.to(roomId).broadcast.emit("AddName", myname);
     });
 
