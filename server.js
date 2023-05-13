@@ -11,10 +11,16 @@ const peerServer = ExpressPeerServer(server, {
 const path = require("path");
 
 app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", true);
   next();
 });
 
@@ -38,6 +44,8 @@ app.get("/join", (req, res) => {
 app.get("/joinold", (req, res) => {
   res.redirect(
     url.format({
+      protocol: window.location.protocol,
+      hostname: window.location.hostname,
       pathname: req.query.meeting_id,
       query: req.query,
     })
