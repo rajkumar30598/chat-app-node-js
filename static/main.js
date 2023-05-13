@@ -33,13 +33,13 @@ const cancel = () => {
   $("#getCodeModal").modal("hide");
 };
 
-// Onload Invite Dialog Copy button 
+// Onload Invite Dialog Copy button
 const copy = async () => {
   const roomid = document.getElementById("roomid").innerText;
   await navigator.clipboard.writeText("http://localhost:3030/join/" + roomid);
 };
 
-// Onload Invite Dialog Trigger Function 
+// Onload Invite Dialog Trigger Function
 const invitebox = () => {
   $("#getCodeModal").modal("show");
 };
@@ -75,7 +75,7 @@ sendmessage = (text) => {
   }
 };
 
-// Peer connection 
+// Peer connection
 peer.on("call", (call) => {
   getUserMedia(
     { video: true, audio: true },
@@ -195,4 +195,3 @@ const RemoveUnusedDivs = () => {
     }
   }
 };
-
