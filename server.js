@@ -28,14 +28,7 @@ app.get("/join", (req, res) => {
 });
 
 app.get("/joinold", (req, res) => {
-  res.redirect(
-    url.format({
-      protocol: window.location.protocol,
-      hostname: window.location.hostname,
-      pathname: req.query.meeting_id,
-      query: req.query,
-    })
-  );
+  res.redirect(`join/${req.query.meeting_id}`);
 });
 
 app.get("/join/:rooms", (req, res) => {
