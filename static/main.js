@@ -21,6 +21,52 @@ var peer = new Peer(undefined, {
   port: "3030",
 });
 
+// Invite trigger Onload page
+window.onload = () => {
+  $(document).ready(function () {
+    $("#getCodeModal").modal("show");
+  });
+};
+
+// Onload Invite Dialog cancel button
+const cancel = () => {
+  $("#getCodeModal").modal("hide");
+};
+
+// Onload Invite Dialog Copy button 
+const copy = async () => {
+  const roomid = document.getElementById("roomid").innerText;
+  await navigator.clipboard.writeText("http://localhost:3030/join/" + roomid);
+};
+
+// Onload Invite Dialog Trigger Function 
+const invitebox = () => {
+  $("#getCodeModal").modal("show");
+};
+
+// To get access audio and video and stream
+navigator.mediaDevices
+  .getUserMedia({
+    video: true,
+    audio: true,
+  })
+  .then((stream) => {
+    myVideoStream = stream;
+    addVideoStream(myVideo, stream, myname);
+
+    socket.on("user-connected", (id, username) => {
+      console.log("userid:" + id);
+      connectToNewUser(id, stream, username);
+      socket.emit("tellName", myname);
+    });
+
+    socket.on("user-disconnected", (id) => {
+      console.log(peers);
+      if (peers[id]) peers[id].close();
+    });
+  });
+
+// Send Message
 sendmessage = (text) => {
   if (event.key === "Enter" && text.value != "") {
     socket.emit("messagesend", myname + " : " + text.value);
@@ -29,6 +75,7 @@ sendmessage = (text) => {
   }
 };
 
+// Peer connection 
 peer.on("call", (call) => {
   getUserMedia(
     { video: true, audio: true },
@@ -49,6 +96,7 @@ peer.on("open", (id) => {
   socket.emit("join-room", roomId, id, myname);
 });
 
+// Socket Emit if Message created
 socket.on("createMessage", (message) => {
   var ul = document.getElementById("messageadd");
   var li = document.createElement("li");
@@ -57,22 +105,47 @@ socket.on("createMessage", (message) => {
   ul.appendChild(li);
 });
 
+// Socket Emit if Message Name Added
 socket.on("AddName", (username) => {
   OtherUsername = username;
   console.log(username);
 });
 
-const RemoveUnusedDivs = () => {
-  //
-  alldivs = videoGrids.getElementsByTagName("div");
-  for (var i = 0; i < alldivs.length; i++) {
-    e = alldivs[i].getElementsByTagName("video").length;
-    if (e == 0) {
-      alldivs[i].remove();
-    }
+// Audio Mute Toggle
+const muteUnmute = () => {
+  const enabled = myVideoStream.getAudioTracks()[0].enabled;
+  if (enabled) {
+    myVideoStream.getAudioTracks()[0].enabled = false;
+    document.getElementById("mic").style.color = "red";
+  } else {
+    document.getElementById("mic").style.color = "white";
+    myVideoStream.getAudioTracks()[0].enabled = true;
   }
 };
 
+// Video Mute Toggle
+const VideomuteUnmute = () => {
+  const enabled = myVideoStream.getVideoTracks()[0].enabled;
+  console.log(getUserMedia);
+  if (enabled) {
+    myVideoStream.getVideoTracks()[0].enabled = false;
+    document.getElementById("video").style.color = "red";
+  } else {
+    document.getElementById("video").style.color = "white";
+    myVideoStream.getVideoTracks()[0].enabled = true;
+  }
+};
+
+// Chat Side UI Toggle
+const showchat = () => {
+  if (chat.hidden == false) {
+    chat.hidden = true;
+  } else {
+    chat.hidden = false;
+  }
+};
+
+//New  Video Connection
 const connectToNewUser = (userId, streams, myname) => {
   const call = peer.call(userId, streams);
   const video = document.createElement("video");
@@ -87,50 +160,7 @@ const connectToNewUser = (userId, streams, myname) => {
   peers[userId] = call;
 };
 
-const cancel = () => {
-  $("#getCodeModal").modal("hide");
-};
-
-const copy = async () => {
-  const roomid = document.getElementById("roomid").innerText;
-  await navigator.clipboard.writeText("http://localhost:3030/join/" + roomid);
-};
-
-const invitebox = () => {
-  $("#getCodeModal").modal("show");
-};
-
-const muteUnmute = () => {
-  const enabled = myVideoStream.getAudioTracks()[0].enabled;
-  if (enabled) {
-    myVideoStream.getAudioTracks()[0].enabled = false;
-    document.getElementById("mic").style.color = "red";
-  } else {
-    document.getElementById("mic").style.color = "white";
-    myVideoStream.getAudioTracks()[0].enabled = true;
-  }
-};
-
-const VideomuteUnmute = () => {
-  const enabled = myVideoStream.getVideoTracks()[0].enabled;
-  console.log(getUserMedia);
-  if (enabled) {
-    myVideoStream.getVideoTracks()[0].enabled = false;
-    document.getElementById("video").style.color = "red";
-  } else {
-    document.getElementById("video").style.color = "white";
-    myVideoStream.getVideoTracks()[0].enabled = true;
-  }
-};
-
-const showchat = () => {
-  if (chat.hidden == false) {
-    chat.hidden = true;
-  } else {
-    chat.hidden = false;
-  }
-};
-
+// Establish Video Connection
 const addVideoStream = (videoEl, stream, name) => {
   videoEl.srcObject = stream;
   videoEl.addEventListener("loadedmetadata", () => {
@@ -154,29 +184,15 @@ const addVideoStream = (videoEl, stream, name) => {
   }
 };
 
-window.onload = () => {
-  $(document).ready(function () {
-    $("#getCodeModal").modal("show");
-  });
+// If user leave remove that div
+const RemoveUnusedDivs = () => {
+  //
+  alldivs = videoGrids.getElementsByTagName("div");
+  for (var i = 0; i < alldivs.length; i++) {
+    e = alldivs[i].getElementsByTagName("video").length;
+    if (e == 0) {
+      alldivs[i].remove();
+    }
+  }
 };
 
-navigator.mediaDevices
-  .getUserMedia({
-    video: true,
-    audio: true,
-  })
-  .then((stream) => {
-    myVideoStream = stream;
-    addVideoStream(myVideo, stream, myname);
-
-    socket.on("user-connected", (id, username) => {
-      console.log("userid:" + id);
-      connectToNewUser(id, stream, username);
-      socket.emit("tellName", myname);
-    });
-
-    socket.on("user-disconnected", (id) => {
-      console.log(peers);
-      if (peers[id]) peers[id].close();
-    });
-  });
