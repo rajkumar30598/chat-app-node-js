@@ -17,8 +17,14 @@ a,
 a:hover,
 a:focus,
 a:active {
-  text-decoration: none;
+  color: white !important;
+  text-decoration: none !important;
   color: inherit;
+}
+
+#share_screen_section {
+  display: flex;
+  justify-content: center;
 }
 
 .video-grid {
@@ -30,22 +36,25 @@ a:active {
   align-items: center;
   flex-wrap: wrap;
   overflow-y: auto;
-  background-color: yellow;
 }
 
-h1 {
+.video-grid > h1 {
   position: absolute;
-  bottom: 0;
-  left: 40%;
+  bottom: -2px;
+  width: 98%;
+  text-align: center;
+  font-family: cursive;
+  color: white;
+  background: #dedede5c;
+  border-radius: 0 0 10px 10px;
 }
 
-video {
+video:not(#share_screen) {
   display: block;
   flex: 1;
   object-fit: cover;
   border: 5px solid #000;
   max-width: 600px;
-  border-radius: 25px;
 }
 
 .mainclone {
@@ -75,15 +84,15 @@ video {
 .main_controls {
   display: flex;
   flex-direction: row;
-  background-color: #1c1e20;
+  background-color: #323232;
   color: white;
   padding: 10px;
   justify-content: space-between;
 }
 
 .main_controls_button {
-  cursor: pointer;
   display: flex;
+  cursor: pointer;
   flex-direction: column;
   padding: 3px 10px;
   min-width: 80px;
@@ -91,9 +100,14 @@ video {
   justify-content: center;
 }
 
+.main_controls_button > span {
+  font-family: fantasy;
+  font-weight: 200;
+}
+
 .main_videos {
   flex-grow: 1;
-  background-color: black;
+  background-color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -109,6 +123,8 @@ video {
 .main__message_container {
   padding: 20px 15px;
   display: flex;
+  background: #5a595a;
+  color: white;
 }
 
 .main__message_container input {
@@ -126,7 +142,7 @@ video {
 
 .main_controls_button:hover {
   background-color: #686666;
-  border-radius: 25px;
+  border-radius: 10px;
 }
 
 .main_right_header {
@@ -135,6 +151,7 @@ video {
   font-size: 20px;
   padding: 10px;
   border-bottom: 2px solid #3d3d42;
+  background: #80808096;
 }
 
 .message {
@@ -142,12 +159,9 @@ video {
   list-style-type: none;
   border: 2px solid #3d3d42;
   margin-bottom: 5px;
-}
-
-.main_right_header h6 {
-  animation: animate 20s linear infinite;
-  background-image: linear-gradient(to right, #f00, #ff0, #0ff, #0f0, #00f);
-  background-size: 1000%;
+  font-weight: 300;
+  font-family: serif;
+  padding-inline-start: 0.5rem;
 }
 
 @keyframes animate {

@@ -42,10 +42,16 @@
     </div>
     <div class="mainclone">
         <div class="main_left">
+            <!-- // Screen Share -->
+            <div id="share_screen_section" style="display: none;">
+                <video id="share_screen" autoplay playsinline muted></video>
+            </div>
+            <!-- // Users -->
             <div class="main_videos">
                 <div id="video-grids">
                 </div>
             </div>
+          
             <div class="main_controls">
                 <div class="main_controls_block">
                     <div class="main_controls_button" id="mic" onclick="muteUnmute()">
@@ -70,6 +76,18 @@
                     <div class="main_controls_button" onclick="showchat()">
                         <i class="fas fa-comment-alt"></i>
                         <span>Chat</span>
+                    </div>
+                    <div id="start-ss">
+                        <div class="main_controls_button" onclick="startCapture()">
+                            <i class="fas fa-share-square"></i>
+                            <span>Share Screen</span>
+                        </div>
+                    </div>
+                    <div id="stop-ss" style="display: none;">
+                        <div class="main_controls_button" onclick="stopCapture()">
+                            <i class="fas fa-share-square"></i>
+                            <span>Stop Screen</span>
+                        </div>
                     </div>
                 </div>
                 <div class="main_controls_block">

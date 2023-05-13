@@ -1,6 +1,7 @@
 const socket = io("/");
 const main__chat__window = document.getElementById("main__chat_window");
 const videoGrids = document.getElementById("video-grids");
+const screenElem = document.getElementById("share_screen");
 const myVideo = document.createElement("video");
 const chat = document.getElementById("chat");
 
@@ -21,25 +22,18 @@ var peer = new Peer(undefined, {
   port: "3030",
 });
 
-// Invite trigger Onload page
-window.onload = () => {
-  $(document).ready(function () {
-    $("#getCodeModal").modal("show");
-  });
-};
-
-// Onload Invite Dialog cancel button
+// Invite Dialog cancel button
 const cancel = () => {
   $("#getCodeModal").modal("hide");
 };
 
-// Onload Invite Dialog Copy button
+// Invite Dialog Copy button
 const copy = async () => {
   const roomid = document.getElementById("roomid").innerText;
   await navigator.clipboard.writeText("http://localhost:3030/join/" + roomid);
 };
 
-// Onload Invite Dialog Trigger Function
+// Invite Dialog Trigger Function
 const invitebox = () => {
   $("#getCodeModal").modal("show");
 };
@@ -194,4 +188,43 @@ const RemoveUnusedDivs = () => {
       alldivs[i].remove();
     }
   }
+};
+
+//share screen 
+const startCapture = async () => {
+  try {
+    const ss_screen = document.getElementById("share_screen_section");
+    const start = document.getElementById("start-ss");
+    const stop = document.getElementById("stop-ss");
+    var displayMediaOptions = {
+      video: {
+        cursor: "always",
+        height: 1000,
+        width: 1200,
+      },
+      audio: false,
+    };
+    screenElem.srcObject = await navigator.mediaDevices.getDisplayMedia(
+      displayMediaOptions
+    );
+    ss_screen.style.display = "flex";
+    start.style.display = "none";
+    stop.style.display = "block";
+  } catch (err) {
+    console.error("Error: " + err);
+  }
+};
+
+const stopCapture = (evt) => {
+  const ss_screen = document.getElementById("share_screen_section");
+  const start = document.getElementById("start-ss");
+  const stop = document.getElementById("stop-ss");
+
+  let tracks = screenElem.srcObject.getTracks();
+  tracks.forEach((track) => track.stop());
+  screenElem.srcObject = null;
+
+  ss_screen.style.display = "none";
+  start.style.display = "block";
+  stop.style.display = "none";
 };
