@@ -30,7 +30,7 @@ const cancel = () => {
 // Invite Dialog Copy button
 const copy = async () => {
   const roomid = document.getElementById("roomid").innerText;
-  await navigator.clipboard.writeText("http://localhost:3030/join/" + roomid);
+  await navigator.clipboard.writeText(window.location.href);
 };
 
 // Invite Dialog Trigger Function
@@ -190,7 +190,7 @@ const RemoveUnusedDivs = () => {
   }
 };
 
-//share screen 
+//share screen
 const startCapture = async () => {
   try {
     const ss_screen = document.getElementById("share_screen_section");
